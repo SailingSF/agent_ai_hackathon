@@ -33,32 +33,40 @@ export default function Home() {
             <h2 className="mx-auto max-w-2xl text-center text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Social media posts for your business.
             </h2>
-            <p className="mx-auto mt-2 max-w-xl text-center text-lg leading-8 text-gray-300">
+            <p className="mx-auto mt-2 mb-4 max-w-xl text-center text-lg leading-8 text-gray-300">
               Please describe what your business is doing, and our agents will
               handle the rest.
             </p>
 
-            <label htmlFor="email-address" className="sr-only">
-              Email address
-            </label>
-            <input
-              id="subject"
-              name="subject"
-              type="text"
-              required
-              placeholder="Subject"
-              value={subject}
-              onChange={(e) => {
-                setSubject(e.target.value);
-              }}
-              className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
-            />
-            <button
-              className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              onClick={onSubmit}
-            >
-              Get started
-            </button>
+            <div className="flex">
+              <label htmlFor="subject" className="sr-only">
+                Subject
+              </label>
+              <input
+                id="subject"
+                name="subject"
+                type="text"
+                required
+                placeholder="Subject"
+                value={subject}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault(); // Prevent the default form submission
+                    onSubmit();
+                  }
+                }}
+                onChange={(e) => {
+                  setSubject(e.target.value);
+                }}
+                className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6 flex mr-4"
+              />
+              <button
+                className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                onClick={onSubmit}
+              >
+                Get started
+              </button>
+            </div>
 
             <div className="mt-10">
               {results?.map((result, id) => (
