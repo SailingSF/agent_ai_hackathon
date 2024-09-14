@@ -1,4 +1,7 @@
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def get_perplexity_response(query_string, api_key):
     url = "https://api.perplexity.ai/chat/completions"
@@ -40,7 +43,7 @@ def get_perplexity_response(query_string, api_key):
         return None
 
 if __name__ == "__main__":
-    api_key = "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"
+    api_key = os.environ.get("PERPLEXITY_API_KEY")
     
     # Test the function with a sample query
     """ query = "How many stars are there in our galaxy?"
