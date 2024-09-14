@@ -8,7 +8,4 @@ class Tweet:
 
 
 def run_agent(subject: str) -> Tweet:
-    return [Tweet(text="Rabbits are taking over the world!")]
-
-
-print(run_agent("Rabbits"))
+    return [Tweet(text=f"{subject} are taking over the world!")]
