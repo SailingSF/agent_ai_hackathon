@@ -1,38 +1,49 @@
-from openai import OpenAI
+import requests
 
 def get_perplexity_response(query_string, api_key):
-    client = OpenAI(api_key=api_key, base_url="https://api.perplexity.ai")
+    url = "https://api.perplexity.ai/chat/completions"
     
-    messages = [
-        {
-            "role": "system",
-            "content": "You are a helpful AI assistant. Provide accurate and up-to-date information based on the user's query."
-        },
-        {
-            "role": "user",
-            "content": query_string
-        }
-    ]
+    payload = {
+        "model": "llama-3.1-sonar-small-128k-online",
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a helpful AI assistant. Provide accurate, relevant and up-to-date information based on the user's query. Be precise and concise. Please "
+            },
+            {
+                "role": "user",
+                "content": query_string
+            }
+        ],
+        "temperature": 0.2,
+        "top_p": 0.9,
+        "return_citations": True,
+        "search_domain_filter": ["perplexity.ai"],
+        "return_images": False,
+        "return_related_questions": False,
+        "search_recency_filter": "day",
+        "frequency_penalty": 1
+    }
+    
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
     
     try:
-        response = client.chat.completions.create(
-            model="llama-3-sonar-large-32k-online",
-            messages=messages,
-            max_tokens=1000
-        )
-        
-        return response.choices[0].message.content
-    
-    except Exception as e:
+        response = requests.post(url, json=payload, headers=headers)
+        response.raise_for_status()
+        result = response.json()
+        return result['choices'][0]['message']['content']
+    except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
         return None
 
 if __name__ == "__main__":
-    # This block will only run if the script is executed directly
-    api_key = "PERPLEXITY_API_KEY"
+    api_key = "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"
     
     # Test the function with a sample query
-    """ query = "What are the latest developments in artificial intelligence?"
+    """ query = "How many stars are there in our galaxy?"
     result = get_perplexity_response(query, api_key)
 
     if result:
