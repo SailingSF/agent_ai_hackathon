@@ -1,12 +1,20 @@
-from agents import Agent
+from agent_class import Agent
+import json
+from agents.tools.perplexity_news import get_perplexity_response
 
 def test_agent_run():
 
     system_prompt = "You are a test agent"
-    model = "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"
-    agent = Agent(system_prompt, model)
+    model = "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo"
 
-    prompt = "Tell me a joke"
+    with open('tools.json', 'r') as file:
+        tools_data = json.load(file)
+        tool_definitions = tools_data['tools']
+
+    tool_map = {"get_news": get_perplexity_response}
+    agent = Agent(system_prompt, model, tool_definitions, tool_map)
+    print(agent)
+    prompt = "Tell me about the recent US presidential debate, concisely."
     response = agent.submit_message(prompt)
 
     print(response)
