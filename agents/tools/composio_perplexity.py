@@ -1,9 +1,10 @@
 from composio_langchain import ComposioToolSet, Action
 from langchain.agents import initialize_agent, AgentType
 from langchain.llms import OpenAI
+import os
 
 # Initialize Composio tool set
-tool_set = ComposioToolSet()
+tool_set = ComposioToolSet(api_key=os.getenv("COMPOSIO_API_KEY"))
 
 # Get Composio's Perplexity AI Search tool and other tools
 tools = tool_set.get_tools(actions=[
