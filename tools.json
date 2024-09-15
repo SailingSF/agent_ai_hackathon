@@ -1,0 +1,24 @@
+{
+    "tools": [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_news",
+            "description": "Gets a summary of recent news about a given topic",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "topic": {
+                        "type": "string",
+                        "description": "The topic you want recent information about"
+                    }
+                },
+                "required": [
+                    "topic"
+                ]
+            }
+        
+        }        
+    }
+    ]  
+}
