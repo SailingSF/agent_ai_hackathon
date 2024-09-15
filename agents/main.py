@@ -134,7 +134,9 @@ async def main():
         'news_retriever': news_agent,
         'tweet_generator': tweet_generator_agent
     }
+
     topic="The health of rabits"
+    
     tweets = await orchestrate_tweet_generation(topic, agents)
     print(tweets)
     groundedness = groundedness_check(topic, str(tweets))
