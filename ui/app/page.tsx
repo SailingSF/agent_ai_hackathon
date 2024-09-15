@@ -72,14 +72,17 @@ export default function Home() {
               {results?.map((result, id) => (
                 <div
                   key={id}
-                  className="tweet p-4 border-b border-gray-200 bg-white rounded mt-3"
+                  className="tweet p-8 border-b border-gray-200 bg-white rounded mt-3 mb-10"
                 >
                   <div className="tweet-header flex items-center space-x-2">
-                    <span className="username font-bold">SocialsSwarm</span>
+                    <div className="avatar-placeholder w-10 h-10 rounded-full bg-gray-300"></div>
+                    <span className="username font-bold text-gray-800">
+                      SocialsSwarm
+                    </span>
                     <span className="handle text-gray-500">@socialsswarm</span>
                     <span className="time text-gray-500">· 1h</span>
                   </div>
-                  <div className="tweet-content mt-2 text-gray-900">
+                  <div className="tweet-content mt-2 text-gray-900 font-medium">
                     {result.text}
                   </div>
                   {result.link_url && (
