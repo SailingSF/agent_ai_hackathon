@@ -32,10 +32,14 @@ export default function Home() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
-      const result = await response.json();
+      const result: { tweets: string } = await response.json();
       console.log(`Generated tweets:`, result.tweets);
       
-      setResults(result.tweets.map((tweet: string) => ({ text: tweet })));
+      // Ensure result.tweets is a string and split it into an array
+      const tweetsArray = result.tweets.split('\n').filter(tweet => tweet.trim() !== '');
+      
+      // Map each tweet to an ITweet object
+      setResults(tweetsArray.map((tweet: string) => ({ text: tweet.trim() })));
     } catch (error) {
       console.error(`Error fetching data:`, error);
     } finally {
@@ -43,8 +47,26 @@ export default function Home() {
     }
   };
 
+  const postTweet = async (tweetText: string) => {
+    try {
+      // Placeholder function for posting a tweet
+      console.log(`Posting tweet: ${tweetText}`);
+      // TODO: Implement the actual API call to post the tweet
+      // const response = await fetch('http://localhost:5001/post_tweet', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ text: tweetText }),
+      // });
+      // if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      // const result = await response.json();
+      // console.log('Tweet posted successfully:', result);
+    } catch (error) {
+      console.error('Error posting tweet:', error);
+    }
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+     <div className="grid grid-rows-[20px_1fr_20px] min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 items-center sm:items-start">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 shadow-2xl sm:rounded-3xl sm:px-24 xl:py-32">
@@ -69,11 +91,17 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="w-full max-w-7xl">
+        <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {results.map((tweet, index) => (
-            <div key={index} className="mb-4 p-4 bg-gray-100 rounded-lg">
-              <p>{tweet.text}</p>
-              {tweet.image_url && <img src={tweet.image_url} alt="Tweet image" className="mt-2 max-w-full h-auto" />}
+            <div key={index} className="p-4 bg-gray-100 rounded-lg flex flex-col justify-between">
+              <p className="mb-4">{tweet.text}</p>
+              {tweet.image_url && <img src={tweet.image_url} alt="Tweet image" className="mb-4 max-w-full h-auto" />}
+              <button
+                onClick={() => postTweet(tweet.text)}
+                className="self-end rounded-md bg-blue-500 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+              >
+                Post
+              </button>
             </div>
           ))}
         </div>

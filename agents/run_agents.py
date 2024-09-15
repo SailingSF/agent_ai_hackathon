@@ -82,9 +82,6 @@ async def post_tweet(tweet: str):
     '''
     Uses composio to submit a tweet
     '''
-    
-
-
 
 async def run_agents_with_topic(topic: str) -> str:
     '''
@@ -115,7 +112,7 @@ async def run_agents_with_topic(topic: str) -> str:
     
     tweet_generator_agent = Agent(
         name="Tweet generator agent",
-        system_prompt="You are a tweet generator. Create engaging tweets based on the given topic and context.",
+        system_prompt="You are a tweet generator. Create engaging tweets based on the given topic and context. Respond with only the tweets you generate. Each below 200 characters. Respond with each tweet delimited by a new line, do not specify tweet 1, tweet 2, etc. Just the content on a new line.",
         model=main_model
     )
     
@@ -126,6 +123,11 @@ async def run_agents_with_topic(topic: str) -> str:
     topic="The health of rabits"
     tweets = await orchestrate_tweet_generation(topic, agents)
 
+    if isinstance(tweets, list):
+        tweets = '\n'.join(tweets)
+    elif not isinstance(tweets, str):
+        tweets = str(tweets)
+    
     return tweets
 
 async def main():
