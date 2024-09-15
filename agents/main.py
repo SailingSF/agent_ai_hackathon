@@ -3,6 +3,7 @@ import sys, json, os
 from news_agent.agent import NewsAgent
 from useful_facts_agent.agent import UsefulFactsAgent
 from hello_world_agent.agent import HelloWorldAgent
+from tweet_agent.agent import TweetAgent
 
 
 import asyncio
@@ -58,3 +59,9 @@ async def web_groundedness_check(topic: str, generated_content: str):
     response = await groundedness_check(topic, generated_content)
 
     return response
+
+@app.function()
+@web_endpoint(method="GET")
+async def send_tweet(tweet: str):
+
+    return TweetAgent.run_agent(tweet)
