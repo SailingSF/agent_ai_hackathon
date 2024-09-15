@@ -1,12 +1,35 @@
 import asyncio
 from agent_class import Agent
-import json
+import json, os
+from dotenv import load_dotenv
+from openai import OpenAI
 from typing import List, Dict
 from agents.tools.perplexity_news import get_perplexity_response
+
+load_dotenv()
 
 def get_tweets(query: str):
 
     return "Tweets"
+
+def groundedness_check(topic: str, generated_content: str):
+
+    api_key = os.environ.get("UPSTAGE_API_KEY")
+    client = OpenAI(
+        api_key=api_key,
+        base_url="https://api.upstage.ai/v1/solar"
+    )
+
+    response = client.chat.completions.create(
+        model="solar-1-mini-groundedness-check",
+        messages=[
+            {"role": "user", "content": f"Generate tweets for the topic of {topic} after gathering interesting facts and context"},
+            {"role": "assistant", "content": generated_content}
+        ]
+    )
+    print(response)
+
+    return response
 
 def test_agent_run():
 
@@ -102,9 +125,10 @@ async def main():
         'news_retriever': news_agent,
         'tweet_generator': tweet_generator_agent
     }
-    
-    tweets = await orchestrate_tweet_generation("The health of rabbits", agents)
+    topic="The health of rabits"
+    tweets = await orchestrate_tweet_generation(topic, agents)
     print(tweets)
+    groundedness = groundedness_check(topic, str(tweets))
 
 if __name__ == "__main__":
     asyncio.run(main())
