@@ -2,7 +2,15 @@
   "agents": [
     {
       "name": "Hello World",
-      "url": "https://yaneq-betterday--social-swarm-hello-world-agent.modal.run"
+      "url": "http://localhost:5001/hello_world_agent"
+    },
+    {
+      "name": "Validated Tweets",
+      "url": "http://localhost:5001/get_validated_tweets"
+    },
+    {
+      "name": "Groundedness Check",
+      "url": "http://localhost:5001/web_groundedness_check"
     }
   ]
 }
