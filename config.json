@@ -1,8 +1,8 @@
 {
   "agents": [
     {
-      "name": "Hello World",
-      "url": "https://yaneq-betterday--social-swarm-hello-world-agent.modal.run"
+      "name": "Useful Facts",
+      "url": "https://yaneq-social-swarm--social-swarm-useful-facts-agent.modal.run/?subject=Rabbits"
     }
   ]
 }
