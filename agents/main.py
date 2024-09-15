@@ -1,10 +1,13 @@
-import sys, json, os
-from useful_facts_agent.agent import UsefulFactsAgent
 import modal
+import sys, json, os
+from news_agent.agent import NewsAgent
+from useful_facts_agent.agent import UsefulFactsAgent
+from hello_world_agent.agent import HelloWorldAgent
+
 
 import asyncio
 from modal import web_endpoint, Image
-from hello_world_agent.agent import HelloWorldAgent
+
 from run_agents import run_agents_with_topic, groundedness_check
 
 app = modal.App("social-swarm")
@@ -28,6 +31,12 @@ async def hello_world_agent(subject: str):
 @web_endpoint(method="GET")
 async def useful_facts_agent(subject: str):
     return UsefulFactsAgent.run_agent(subject)
+
+
+@app.function(image=image, secrets=[modal.Secret.from_name("my-custom-secret")])
+@web_endpoint(method="GET")
+async def news_agent(subject: str):
+    return NewsAgent.run_agent(subject)
 
 
 @app.function(image=image, secrets=[modal.Secret.from_name("my-custom-secret")])
