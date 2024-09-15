@@ -1,12 +1,14 @@
 import os, json
 from dotenv import load_dotenv
 from together import Together
-
+import logging
+logger = logging.getLogger(__name__)
 load_dotenv()
 
 class Agent:
-    def __init__(self, system_prompt: str, model: str, tools: list[dict] = [], tools_map: dict = {}):
+    def __init__(self, name: str, system_prompt: str, model: str, tools: list[dict] = [], tools_map: dict = {}):
         api_key = os.environ.get("TOGETHER_API_KEY")
+        self.name = name
         self.client = Together(api_key=api_key)
         self.system_prompt = system_prompt
         self.model = model
@@ -23,13 +25,12 @@ class Agent:
 
         tool_calls = completion.choices[0].message.tool_calls
         while tool_calls:
-            print("TOOL CALLS")
-            print(tool_calls)
+            logger.debug(f"Tool calls present.\n\n{tool_calls}")
             self.messages.append(completion.choices[0].message)  # extend conversation with assistant's reply
             # handle tool call
             completion = self._handle_tool_call(tool_calls)
             tool_calls = completion.choices[0].message.tool_calls
-        print("No more tool calls")
+        logger.debug(f"No more tool calls for run of {self.name} agent")
 
         return completion.choices[0].message.content
 
@@ -41,7 +42,7 @@ class Agent:
             function_args = json.loads(tool_call.function.arguments)
 
             function_response_json: str
-            print(f"Trying to run function: {function_name} with arguments of {function_args}")
+            logger.debug(f"Trying to run function: {function_name} with arguments of {function_args}")
             try:
                 function_response = function_to_call(**function_args)
                 function_response_json = json.dumps(function_response)
@@ -80,6 +81,7 @@ class Agent:
         messages_info = "\n".join([f"{msg['role']}: {msg['content']}" for msg in self.messages])
         
         return f"Agent Information:\n" \
+               f"Name: {self.name}\n" \
                f"Model: {self.model}\n" \
                f"Tools: {tools_info}\n" \
                f"Current Messages:\n{messages_info}"
