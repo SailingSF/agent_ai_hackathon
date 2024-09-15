@@ -1,9 +1,9 @@
 import json, os
 from typing import List, Dict
 import asyncio
-from tools.perplexity_news import get_perplexity_response
+from agents.tools.perplexity_news import get_perplexity_response
 from openai import OpenAI
-from agent_class import Agent
+from agents.agent_class import Agent
 from dotenv import load_dotenv
 import logging
 
@@ -77,6 +77,13 @@ async def groundedness_check(topic: str, generated_content: str):
     )
 
     return response
+
+async def post_tweet(tweet: str):
+    '''
+    Uses composio to submit a tweet
+    '''
+    
+
 
 
 async def run_agents_with_topic(topic: str) -> str:
