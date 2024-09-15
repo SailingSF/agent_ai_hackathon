@@ -9,7 +9,7 @@ tool_set = ComposioToolSet()
 tools = tool_set.get_tools(actions=[
     Action.PERPLEXITYAI_PERPLEXITY_AI_SEARCH,
     Action.GOOGLE_SEARCH,
-    Action.GITHUB_SEARCH,
+    #Action.GITHUB_SEARCH,
     # Add more tools as needed
 ])
 
