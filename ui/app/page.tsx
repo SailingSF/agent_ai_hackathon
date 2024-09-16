@@ -3,6 +3,7 @@ import Image from "next/image";
 import config from "../../config.json";
 import { useState } from "react";
 import { ITweet } from "./types/types";
+import socialswarmlogo from "./images/socialswarmlogo.png"; // Adjust the path as necessary
 
 export default function Home() {
   const [results, setResults] = useState<ITweet[]>([]);
@@ -40,12 +41,21 @@ export default function Home() {
     <div className="grid grid-rows-[20px_1fr_20px] min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 items-center sm:items-start">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="flex justify-center items-center">
-            <span className="mx-auto text-xl font-bold p-3 text-gray-200">
-              SocialSwarm
-            </span>
-          </div>
-          <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 shadow-2xl sm:rounded-3xl sm:px-24 xl:py-32">
+          <div className="relative isolate overflow-hidden bg-gray-900 px-6  pb-24 shadow-2xl sm:rounded-3xl sm:px-24 xl:pb-32">
+            <div className="flex justify-center items-center pt-10 pb-4">
+              <span className="flex items-center justify-center">
+                <Image
+                  src={socialswarmlogo}
+                  alt="SocialSwarm Logo"
+                  width={100}
+                  height={100}
+                  className={`w-8 h-8 ${isLoading ? "animate-spin" : ""}`}
+                />
+                <span className="text-xl font-bold p-3 text-gray-200">
+                  SocialSwarm
+                </span>
+              </span>
+            </div>
             <h2 className="mx-auto max-w-2xl text-center text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Social media posts for your business.
             </h2>
@@ -63,7 +73,7 @@ export default function Home() {
                 name="subject"
                 type="text"
                 required
-                placeholder="Subject"
+                placeholder="Subject (Pizza, Rabbits,...)"
                 value={subject}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -79,7 +89,7 @@ export default function Home() {
               <button
                 className={`flex-none rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
                   isLoading
-                    ? "bg-gray-300 text-gray-500"
+                    ? "bg-gray-300 text-gray-500 animate-pulse"
                     : "bg-white text-gray-900 hover:bg-gray-100 focus-visible:outline-white"
                 }`}
                 onClick={!isLoading ? onSubmit : undefined}
@@ -98,9 +108,9 @@ export default function Home() {
                   <div className="tweet-header flex items-center space-x-2">
                     <div className="avatar-placeholder w-10 h-10 rounded-full bg-gray-300"></div>
                     <span className="username font-bold text-gray-800">
-                      SocialsSwarm
+                      SocialSwarm
                     </span>
-                    <span className="handle text-gray-500">@socialsswarm</span>
+                    <span className="handle text-gray-500">@socialswarm</span>
                     <span className="time text-gray-500">· 1h</span>
                   </div>
                   <div className="tweet-content mt-2 text-gray-900 font-medium">
