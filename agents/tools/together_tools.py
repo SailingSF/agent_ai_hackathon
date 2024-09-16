@@ -8,7 +8,6 @@ MAX_TOKENS = 512
 
 def get_client():
     api_key = os.environ.get("TOGETHER_API_KEY")
-    print("api key is", api_key)
     return Together(api_key=api_key)
 
 

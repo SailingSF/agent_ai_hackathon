@@ -2,11 +2,11 @@
   "agents": [
     {
       "name": "Useful Facts",
-      "url": "https://yaneq-social-swarm--social-swarm-useful-facts-agent.modal.run/?subject=Rabbits"
+      "url": "https://yaneq-social-swarm--social-swarm-useful-facts-agent.modal.run"
     },
     {
       "name": "News",
-      "url": "https://yaneq-social-swarm--social-swarm-news-agent.modal.run/"
+      "url": "https://yaneq-social-swarm--social-swarm-news-agent.modal.run"
     }
   ]
 }

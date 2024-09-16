@@ -1,3 +1,5 @@
+from classes import Tweet
+from tools.tweet_analyzer import TweetAnalyzer
 import modal
 import sys, json, os
 from news_agent.agent import NewsAgent
@@ -50,6 +52,12 @@ async def get_validated_tweets(topic: str) -> str:
     """
 
     return await run_agents_with_topic(topic)
+
+
+@app.function(image=image, secrets=[modal.Secret.from_name("my-custom-secret")])
+@web_endpoint(method="GET")
+async def analyze_tweet(tweet: str):
+    return TweetAnalyzer.analyze(Tweet(text=tweet))
 
 
 @app.function()
