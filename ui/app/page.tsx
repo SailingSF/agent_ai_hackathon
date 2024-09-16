@@ -7,9 +7,10 @@ import { ITweet } from "./types/types";
 export default function Home() {
   const [results, setResults] = useState<ITweet[]>([]);
   const [subject, setSubject] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
   const onSubmit = () => {
     setResults([]);
-    config.agents.forEach(async (agent) => {
+    const fetchAgentData = async (agent: { url: string }) => {
       try {
         const startTime = performance.now();
         const response = await fetch(`${agent.url}?subject=${subject}`);
@@ -18,24 +19,39 @@ export default function Home() {
           `Call to ${agent.url} took ${endTime - startTime} milliseconds.`
         );
         const result = await response.json();
-        setResults((prevResults) => prevResults.concat(result));
+        return result;
       } catch (error) {
         console.error(`Error fetching data from ${agent.url}:`, error);
+        return [];
       }
-    });
+    };
+
+    const fetchAllAgents = async () => {
+      setIsLoading(true);
+      const results = await Promise.all(config.agents.map(fetchAgentData));
+      setResults(results.flat());
+      setIsLoading(false);
+    };
+
+    fetchAllAgents();
   };
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 items-center sm:items-start">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="flex justify-center items-center">
+            <span className="mx-auto text-xl font-bold p-3 text-gray-200">
+              SocialSwarm
+            </span>
+          </div>
           <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 shadow-2xl sm:rounded-3xl sm:px-24 xl:py-32">
             <h2 className="mx-auto max-w-2xl text-center text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Social media posts for your business.
             </h2>
             <p className="mx-auto mt-2 mb-4 max-w-xl text-center text-lg leading-8 text-gray-300">
-              Please describe what your business is doing, and our agents will
-              handle the rest.
+              Tell us what your business is doing, and our agents will handle
+              the rest.
             </p>
 
             <div className="flex">
@@ -61,10 +77,15 @@ export default function Home() {
                 className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6 flex mr-4"
               />
               <button
-                className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                onClick={onSubmit}
+                className={`flex-none rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
+                  isLoading
+                    ? "bg-gray-300 text-gray-500"
+                    : "bg-white text-gray-900 hover:bg-gray-100 focus-visible:outline-white"
+                }`}
+                onClick={!isLoading ? onSubmit : undefined}
+                disabled={isLoading}
               >
-                Get started
+                Generate Tweets
               </button>
             </div>
 
