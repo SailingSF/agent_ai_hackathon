@@ -3,7 +3,6 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 from classes import Tweet
-load_dotenv()
 
 
 
@@ -11,8 +10,8 @@ class TweetAgent:
     def run_agent(tweet: str) -> str:
         task = f"Tweet the following message from my account: {tweet}"
 
-        openai_client = OpenAI(api_key=os.getenv("OPENAI_LOCAL_API_KEY"))
-        tool_set = ComposioToolSet(api_key=os.getenv("COMPOSIO_API_KEY"))
+        openai_client = OpenAI(api_key=os.environ.get("OPENAI_LOCAL_API_KEY"))
+        tool_set = ComposioToolSet(api_key=os.environ.get("COMPOSIO_API_KEY"))
 
         tools = tool_set.get_tools(actions=[Action.TWITTER_CREATION_OF_A_POST])
 
