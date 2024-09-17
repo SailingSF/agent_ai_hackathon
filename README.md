@@ -30,7 +30,7 @@ To set up the project locally, follow these steps:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/sailingsf/ai_agent_hackathon.git
+   git clone https://github.com/sailingsf/agent_ai_hackathon.git
    cd social-swarm
    ```
 
